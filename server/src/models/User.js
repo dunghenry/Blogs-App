@@ -14,7 +14,7 @@ const userSchema = new Schema({
         type: String,
         required: false
     },
-    googleId: {
+    googleId:{
         type: String,
         required: false
     },
