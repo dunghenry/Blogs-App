@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const tourController = require('../controllers/tourController');
-router.post('/toures/create', tourController.createTour)
+const {verifyToken} = require('../middleware/verifyToken');
+router.get('/tours', tourController.getTours)
+router.post('/tours', verifyToken, tourController.createTour)
 module.exports = router;
