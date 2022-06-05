@@ -13,7 +13,6 @@ const verifyToken = async (req, res, next) => {
                     return res.status(403).json('Token is not valid!!!');
                 }
                 req.userId = user?.id;
-                console.log(user)
                 next();
             });
         }
