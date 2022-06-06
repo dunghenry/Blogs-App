@@ -50,7 +50,7 @@ const Login = () => {
   const googleSuccess = (response) => {
     const email = response?.profileObj?.email;
     const name = response?.profileObj?.name;
-    const token = response?.accessToken;
+    const token = response?.tokenId;
     const googleId = response?.googleId
     const result = { name, email, token, googleId }
     dispatch(googleSignIn({ result, navigate, toast }))

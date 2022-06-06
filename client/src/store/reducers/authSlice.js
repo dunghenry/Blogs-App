@@ -86,7 +86,6 @@ const authSlice = createSlice({
       state.loading = true
     },
     [googleSignIn.fulfilled]: (state, action) => {
-      console.log(action.payload)
       localStorage.removeItem('profile');
       state.loading = false
       localStorage.setItem("profile", JSON.stringify({...action.payload}))
