@@ -17,28 +17,25 @@ import { Link } from "react-router-dom";
 import Spinner from '../components/Spinner';
 import { deleteTour } from '../store/reducers/tourSlice';
 import { toast } from 'react-toastify';
+import expected from '../utils/expected'
 const DashBoard = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state.auth }));
   const userId = user?._id;
-  const { userTours, loading } = useSelector((state) => ({ ...state.tour }));
-  const excerpt = (str) => {
-    if (str.length > 40) {
-      str = str.substring(0, 40) + " ...";
-    }
-    return str;
-  };
+  const { userTours, loading, errors } = useSelector((state) => ({ ...state.tour }));
   const handleDelete = (id) => {
     dispatch(deleteTour({ id, toast }));
   };
-
+  useEffect(() => {
+    errors && toast.error(errors[0])
+  }, [errors])
   useEffect(() => {
     if (userId) {
       dispatch(getToursByUser(userId));
     }
   }, [userId]);
 
-  if (loading) {
+  if(loading) {
     return <Spinner />;
   }
   return (
@@ -80,7 +77,7 @@ const DashBoard = () => {
                     </MDBCardTitle>
                     <MDBCardText className="text-start">
                       <small className="text-muted">
-                        {excerpt(item.description)}
+                        {expected(item.description)}
                       </small>
                     </MDBCardText>
                     <div

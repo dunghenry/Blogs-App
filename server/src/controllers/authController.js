@@ -7,7 +7,7 @@ const authController = {
       { id: user._id, email: user.email },
       process.env.ACCESS_TOKEN_SECRET,
       {
-        expiresIn: "5h",
+        expiresIn: "10h",
       }
     );
   },

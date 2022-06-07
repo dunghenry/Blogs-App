@@ -11,18 +11,38 @@ import {
   MDBNavbarBrand,
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import { setLogout } from "../store/reducers/authSlice";
+import { searchTours } from '../store/reducers/tourSlice'
+import decoded from 'jwt-decode'
 const Header = () => {
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
-
   const { user } = useSelector((state) => ({ ...state.auth }));
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const accessToken = user?.accessToken
+
+  if (accessToken) {
+    const decodedAccessToken = decoded(accessToken)
+    if (decodedAccessToken.exp * 1000 < new Date().getTime()) {
+      dispatch(setLogout());
+    }
+  }
   const handleLogout = () => {
     dispatch(setLogout());
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (search) {
+      dispatch(searchTours(search));
+      navigate(`/tours/search?searchQuery=${search}`)
+      setSearch("")
+    }
+    else {
+      navigate("/")
+    }
+
   };
   return (
     <MDBNavbar fixed="top" expand="lg" style={{ backgroundColor: "#f0e6ec" }}>

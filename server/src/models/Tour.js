@@ -7,9 +7,9 @@ const tourSchema  = new Schema({
     creator: String,
     tags: [String],
     imageFile: String,
-    likeCount: {
-        type: Number,
-        default: 0
+    likes: {
+        type: [String],
+        default: []
     }
 },{
     timestamps: true

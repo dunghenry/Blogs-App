@@ -8,13 +8,19 @@ import {
   MDBContainer,
 } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Link} from "react-router-dom";
 import moment from "moment";
-import { getTour } from "../store/reducers/tourSlice";
+import { getTour, getRelatedTours } from "../store/reducers/tourSlice";
+import RelatedTours from '../components/RelatedTours'
 const SingleTour = () => {
   const dispatch = useDispatch();
-  const { tour } = useSelector((state) => ({ ...state.tour }));
+  const { tour, relatedTours } = useSelector((state) => ({ ...state.tour }));
   const { id } = useParams();
+  const tags = tour?.tags
+  useEffect(() => {
+    tags && dispatch(getRelatedTours(tags))
+  }, [tags])
+  
   useEffect(() => {
     if (id) {
       dispatch(getTour(id));
@@ -39,7 +45,9 @@ const SingleTour = () => {
             </span>
             <div style={{ float: "left" }}>
               <span className="text-start">
-                {tour && tour.tags && tour.tags.map((item) => `#${item}`)}
+                {tour && tour.tags && tour.tags.map((item, index) => (
+                  <Link key={index} to={`/tours/tag/${item}`}>#{item}</Link>
+                ))}
               </span>
             </div>
             <br />
@@ -58,6 +66,7 @@ const SingleTour = () => {
               {tour.description}
             </MDBCardText>
           </MDBCardBody>
+          <RelatedTours relatedTours={relatedTours} tourId={id} />
         </MDBCard>
       </MDBContainer>
     </div>

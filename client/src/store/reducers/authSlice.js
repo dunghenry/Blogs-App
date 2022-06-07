@@ -58,14 +58,15 @@ const authSlice = createSlice({
   },
   extraReducers: {
     [login.pending]: (state) => {
+      state.error = []
       state.loading = true
     },
     [login.fulfilled]: (state, action) => {
+      state.error = []
       localStorage.removeItem('profile');
       state.loading = false
       localStorage.setItem("profile", JSON.stringify({...action.payload}))
       state.user = action.payload
-      state.error = []
     },
     [login.rejected]: (state, action) => {
       state.loading = false
